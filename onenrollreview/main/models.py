@@ -22,7 +22,7 @@ class userInformation(models.Model):
 
 class schoolReview(models.Model):
     reviewId = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    userId = models.ForeignKey(userInformation,on_delete=models.CASCADE,related_name='username')
+    userId = models.ForeignKey(userInformation,on_delete=models.CASCADE)
     schoolId = models.ForeignKey(schoolInformation,on_delete=models.CASCADE)
     createdAt = models.DateTimeField(auto_now_add=True)
     userRating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
@@ -38,7 +38,7 @@ class reviewPhoto(models.Model):
     photoID  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     userID  = models.ForeignKey(userInformation,on_delete=models.CASCADE)
     schoolID = models.ForeignKey(schoolInformation,on_delete=models.CASCADE)
-    userPhotosURL = models.ImageField(upload_to='schoolReview/',blank=True)
+    userPhotosURL = models.ImageField(upload_to='schoolReview/')
     def __str__(self):
         return str(self.userPhotosURL)
 
@@ -46,6 +46,7 @@ class reviewPhoto(models.Model):
 class schoolReviewComment(models.Model): 
     commentID =  models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     reviewID  = models.ForeignKey(schoolReview,on_delete=models.CASCADE)
+    userId = models.ForeignKey(userInformation,on_delete=models.CASCADE)
     createdAt = models.DateTimeField(auto_now_add=True)
     userComment = models.TextField(blank=True,default='')
     isReviewAbusive = ArrayField(models.CharField(max_length=36),blank=True,null=True)

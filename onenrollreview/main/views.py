@@ -8,7 +8,7 @@ from .serializers import *
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend #Filter
 
-class schoolReviewViewSet(viewsets.ModelViewSet):
+class schoolReviewViewSet(viewsets.ModelViewSet):        
     queryset = schoolReview.objects.all()
     serializer_class = schoolReviewSerializer
     filter_backends = [DjangoFilterBackend]
@@ -29,4 +29,5 @@ class reviewPhotoViewSet(viewsets.ModelViewSet):
 class schoolReviewCommentViewSet(viewsets.ModelViewSet):
     queryset =  schoolReviewComment.objects.all()
     serializer_class = schoolReviewCommentSerializer
-
+ 
+ 
