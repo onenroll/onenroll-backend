@@ -8,7 +8,7 @@ All static files and incoming media files(here pictures) are handled and stored 
 POST Development is not fully-functional and tested. So may not fully work
 
 
-#Deployment of Django and PostgreSQL using Zappa on Lambda
+# Deployment of Django and PostgreSQL using Zappa on Lambda
 
 Install zappa in virtual Env using pip zappa 
 
