@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -26,16 +27,17 @@ SECRET_KEY = '86=hkhosdqwr4^dr3rmax$8i%ypma&+2$tfo4*mc88=b9$rd)e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ltoep58349.execute-api.ap-south-1.amazonaws.com']
+ALLOWED_HOSTS = ['127.0.0.1','ltoep58349.execute-api.ap-south-1.amazonaws.com']
 
 
 # Application definition
-
+#'django_s3_storage',
+    
 INSTALLED_APPS = [
     'main',
+    'storages',
     'rest_framework',
     'django_filters',
-    'django_s3_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,6 +79,7 @@ WSGI_APPLICATION = 'onenrollreview.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+
 '''
 DATABASES = {
     'default': {
@@ -89,6 +92,7 @@ DATABASES = {
     }
 }
 '''
+
 # AWS-RDS Instance
 DATABASES = {
     'default': {
@@ -137,42 +141,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-''' Static and Media Files Handling on localhost
-STATIC_URL = '/static/'
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [ os.path.join(BASE_DIR,'static'),
+AWS_DEFAULT_ACL = None
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR,'assets') 
-
-# Media files
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-'''
-# Static and Media Files Handling on AWS - S3 Bucket
-
-YOUR_S3_BUCKET = "onenrollreview"
-
-STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
-AWS_S3_BUCKET_NAME_STATIC = YOUR_S3_BUCKET
-
-# These next two lines will serve the static files directly 
-# from the s3 bucket
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % YOUR_S3_BUCKET
-STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
-
-MEDIA_URL =  '/tmp'
-
-
-
-
-
-
-
-
-
-
-
-
-
+AWS_ACCESS_KEY_ID = "AKIA6HCC22IHMHAOBXHF"
+AWS_SECRET_ACCESS_KEY = "NBfBJv3wxI3ZzbOAAau2FehDJI3NQtVSZMI6v2BQ"
+AWS_STORAGE_BUCKET_NAME = "onenrollreview"
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
